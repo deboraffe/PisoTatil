@@ -1,0 +1,2 @@
+# Reconhecimento_Piso_Tatil
+Repositório destinado aos códigos desenvolvidos durante a monografia submetida ao curso de graduação em Engenharia Eletrônica da Universidade de Brasília no ano de 2023, elaborada por Débora Fernandes Gonçalves e orientada pelo Prof. Dr. Daniel Maurício Muñoz Arboleda, abordando um sistema de navegação de cadeiras de rodas por meio do reconhecimento de pisos táteis através da visão computacional.
