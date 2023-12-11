@@ -30,7 +30,7 @@ while frame_count < 10:  # Processar 10 frames
     # Binarização
     _, frameThresh = cv2.threshold(frameBlur, 68, 255, cv2.THRESH_BINARY)
 
-    # Contar pixels brancos
+    # Conta os pixels
     white_pixels = cv2.countNonZero(frameThresh)
     black_pixels = frameThresh.size - white_pixels
 
