@@ -4,10 +4,8 @@ import RPi.GPIO as GPIO
 import timeit
 import time
 
-#i_time = timeit.default_timer()
-
 # Abre a câmera
-cap = cv2.VideoCapture(0, cv2.CAP_V4L2)  # 0 indica o índice da câmera (pode variar dependendo do sistema)
+cap = cv2.VideoCapture(0, cv2.CAP_V4L2)  # 0 indica o índice da câmera
 # Abre o vídeo
 #cap = cv2.VideoCapture("/home/deboradfg/Desktop/videoindoor_v2.h264")
 # Verifica se a câmera foi aberta com sucesso
@@ -15,13 +13,13 @@ if not cap.isOpened():
     print("Erro ao abrir a câmera.")
     exit()
     
-# Defina o número do pino GPIO conectado ao LED
+# Define o número do pino GPIO conectado ao LED
 GPIO.setmode(GPIO.BOARD) # Define o modo de numeração (Board)
 GPIO.setwarnings(False) # Desativa as mensagens de alerta
 LED_DIRECIONAL = 11
 LED_ALERTA = 7
 
-# Inicialize o GPIO
+# Inicializa o GPIO
 GPIO.setup(LED_DIRECIONAL, GPIO.OUT)
 GPIO.setup(LED_ALERTA, GPIO.OUT)
 
@@ -66,30 +64,29 @@ try:
         # Binarização
         _, frameThresh = cv2.threshold(frameBlur, thresh, 255, cv2.THRESH_BINARY)
 
-        # Contar pixels brancos
+        # Conta os pixels brancos
         white_pixels = cv2.countNonZero(frameThresh)
         black_pixels = frameThresh.size - white_pixels
                 
-        # Atualizar a contagem se a quantidade de pixels brancos estiver acima do limite
+        # Atualiza a contagem se a quantidade de pixels brancos estiver acima do limiar observado
         if black_pixels > 95000:
             contagem_acima_limite += 1
         else:
             contagem_acima_limite = 0
 
-        # Verificar se a contagem atingiu o número de frames desejado
-        if contagem_acima_limite >= 5:
+        # Verifica se a contagem atingiu o número de frames desejado
+        if contagem_acima_limite >= 10:
             print(f"Número de pixels pretos: {black_pixels} Piso de alerta")
-            # Ligar o LED por 10 segundos
-            GPIO.output(LED_DIRECIONAL, GPIO.LOW)  # Desligar o LED direcional
+            GPIO.output(LED_DIRECIONAL, GPIO.LOW)  # Desliga o LED direcional
             GPIO.output(LED_ALERTA, GPIO.HIGH)     # Acende o LED de alerta
             
         else:
             print(f"Número de pixels pretos: {black_pixels} Piso direcional")
-            GPIO.output(LED_ALERTA, GPIO.LOW)       # Desligar o LED de alerta
+            GPIO.output(LED_ALERTA, GPIO.LOW)       # Desliga o LED de alerta
             GPIO.output(LED_DIRECIONAL, GPIO.HIGH)  # Acende o LED direcional
             
             
-        # Exibir imagens
+        # Exibe as imagens
         cv2.imshow('Video', frameThresh)
         cv2.imshow('Video Original', frame)
 
@@ -97,12 +94,8 @@ try:
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
          
-    #f_time = timeit.default_timer()
-    #processing_time = f_time - i_time
-    #print(f"Tempo de processamento do algoritmo: {processing_time * 1e6} microsegundos")
-
-finally:
-    # Limpar a configuração da GPIO quando o programa está prestes a encerrar
+ finally:
+    # Limpa a configuração da GPIO quando o programa está prestes a encerrar
     GPIO.cleanup()
-    # Fechar a janela do OpenCV
+    # Fecha a janela do OpenCV
     cv2.destroyAllWindows()
