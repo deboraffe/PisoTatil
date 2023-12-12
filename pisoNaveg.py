@@ -5,9 +5,9 @@ import timeit
 import time
 
 # Abre a câmera
-#cap = cv2.VideoCapture(0, cv2.CAP_V4L2)  # 0 indica o índice da câmera
+cap = cv2.VideoCapture(0, cv2.CAP_V4L2)  # 0 indica o índice da câmera
 # Abre o vídeo
-cap = cv2.VideoCapture("/home/deboradfg/Desktop/videoNaveg.h264")
+#cap = cv2.VideoCapture("/home/deboradfg/Desktop/videoNaveg.h264")
 # Verifica se a câmera foi aberta com sucesso
 if not cap.isOpened():
     print("Erro ao abrir a câmera.")
